@@ -1,0 +1,24 @@
+{
+	"name": "youtube-downloader",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./bin/index.js",
+	"bin": {
+		"yt-downloader": "./bin/index.js"
+	},
+	"scripts": {
+		"start": "node ./bin/index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Yusuf Fakhreddin",
+	"license": "MIT",
+	"dependencies": {
+		"chalk": "^4.1.1",
+		"clipboardy": "^2.3.0",
+		"commander": "^8.1.0",
+		"download": "^8.0.0",
+		"downloads-folder": "^3.0.1",
+		"inquirer": "^8.1.2",
+		"ytdl-core": "^4.9.0"
+	}
+}
