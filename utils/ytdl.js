@@ -2,8 +2,6 @@ const chalk = require("chalk");
 const downloadsFolder = require("downloads-folder");
 const ytdl = require("ytdl-core");
 const fs = require("fs");
-const path = require("path");
-const download = require("download");
 
 const validateLink = async (link) => {
 	return await ytdl.validateURL(link);
@@ -14,45 +12,41 @@ let containers = [];
 const getInfo = async (link) => {
 	const info = await ytdl.getInfo(link);
 	let title = info.videoDetails.title;
-	console.log(chalk.yellow(info.videoDetails.title));
-	console.log(chalk.yellow(info.videoDetails.author.name));
-	console.log(chalk.yellow(info.videoDetails.likes));
-	console.log(chalk.yellow(info.videoDetails.dislikes));
+	console.log(chalk.yellow("Video Title: " + info.videoDetails.title));
+	console.log(chalk.yellow("Channel: " + info.videoDetails.author.name));
+	console.log(chalk.yellow("Likes: " + info.videoDetails.likes));
+	console.log(chalk.yellow("Dislikes: " + info.videoDetails.dislikes));
 
 	let qualities = [];
 	const filters = await ytdl.filterFormats(info.formats, "audioandvideo");
-	console.log(chalk.yellow("filters " + filters.length));
+	// console.log(chalk.yellow("filters " + filters.length));
 	for (let i = 0; i < info.formats.length; i++) {
 		if (
-			(info.formats[i].container == "mp4" ||
-				info.formats[i].container == "flv" ||
-				info.formats[i].container == "hls" ||
-				info.formats[i].container == "webm") &&
+			info.formats[i].container == "mp4" &&
 			info.formats[i].hasAudio &&
 			info.formats[i].qualityLabel
 		) {
-			console.log(
-				chalk.blue(
-					info.formats[i].itag +
-						" " +
-						info.formats[i].qualityLabel +
-						" " +
-						info.formats[i].contianer +
-						" " +
-						qualities.includes(info.formats[i].qualityLabel)
-				)
-			);
-			// if (
-			// 	qualities.includes(info.formats[i].qualityLabel) === false &&
-			// 	info.formats[i].hasAudio
-			// ) {
-			qualities.push(info.formats[i].qualityLabel);
-			itags.push(info.formats[i].itag);
-			containers.push(info.formats[i].container);
-			// } else continue;
+			// console.log(
+			// 	chalk.blue(
+			// 		info.formats[i].itag +
+			// 			" " +
+			// 			info.formats[i].qualityLabel +
+			// 			" " +
+			// 			info.formats[i].contianer +
+			// 			" " +
+			// 			qualities.includes(info.formats[i].qualityLabel)
+			// 	)
+			// );
+			if (
+				qualities.includes(info.formats[i].qualityLabel) === false &&
+				info.formats[i].hasAudio
+			) {
+				qualities.push(info.formats[i].qualityLabel);
+				itags.push(info.formats[i].itag);
+				containers.push(info.formats[i].container);
+			} else continue;
 		}
 	}
-	console.log(chalk.white(qualities));
 
 	return { qualities, title };
 };
@@ -63,16 +57,13 @@ const videoDownload = async (URL, quality, title) => {
 	const video = await ytdl(URL, {
 		filter: (format) => format.itag == itag,
 	});
-	video.on("start", function (info) {
-		console.log(info);
-	});
+	console.log(
+		"Your Download has started at " + downloadsPath + "\\" + title + ".mp4"
+	);
 	video.on("end", function (info) {
-		console.log("Download finish");
+		console.log(chalk.green("Download finished"));
 	});
 	video.pipe(fs.createWriteStream(downloadsPath + "\\" + title + ".mp4"));
-	console.log(chalk.red(itags));
-	console.log(chalk.red(containers));
-	console.log(chalk.red(downloadsPath + "\\" + title + ".mp4"));
 };
 
 module.exports = {
@@ -80,12 +71,3 @@ module.exports = {
 	getInfo,
 	videoDownload,
 };
-
-// GeeksForGeeks
-// const path = `${__dirname}/files/img.jpeg`;
-// const filePath = fs.createWriteStream(path);
-// res.pipe(filePath);
-// filePath.on("finish", () => {
-// 	filePath.close();
-// 	console.log("Download Completed");
-// });

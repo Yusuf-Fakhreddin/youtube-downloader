@@ -4,7 +4,7 @@ const question1 = [
 	{
 		type: "input",
 		name: "URL",
-		message: "Enter your video URL",
+		message: "Please enter a valid youtube video URL",
 	},
 ];
 
@@ -17,7 +17,7 @@ const qualityPrompt = async (qualities) => {
 		{
 			type: "list",
 			name: "quality",
-			message: "Enter your video quality",
+			message: "Choose between the available qualities that has audio",
 			choices: qualities,
 		},
 	];

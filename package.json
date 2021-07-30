@@ -14,9 +14,6 @@
 	"license": "MIT",
 	"dependencies": {
 		"chalk": "^4.1.1",
-		"clipboardy": "^2.3.0",
-		"commander": "^8.1.0",
-		"download": "^8.0.0",
 		"downloads-folder": "^3.0.1",
 		"inquirer": "^8.1.2",
 		"ytdl-core": "^4.9.0"
